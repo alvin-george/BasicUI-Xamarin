@@ -46,13 +46,13 @@ namespace BasicUI
 
 			tableView.DeselectRow (indexPath, true);
 
-			if (FundRequestSelected != null)
+			if (FundRequestSelected != null)				
 				FundRequestSelected (this, indexPath);
 
 			UIStoryboard board = UIStoryboard.FromName ("Main", null);
+
 			ViewController ctrl = (ViewController)board.InstantiateViewController ("viewControllerID");
 			owner.PresentViewController (ctrl, true, null);
-
 			//owner.PerformSegue("segueToViewController", this);
 		}
 
