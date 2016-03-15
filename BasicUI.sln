@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicUI", "BasicUI\BasicUI.csproj", "{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}.Debug|iPhone.Build.0 = Debug|iPhone
+		{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}.Release|iPhone.ActiveCfg = Release|iPhone
+		{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}.Release|iPhone.Build.0 = Release|iPhone
+		{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+EndGlobal
