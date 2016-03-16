@@ -35,7 +35,6 @@ namespace BasicUI
 			//Setting Table Source
 			string[] tableItems = new string[] {"UILabel","UITextField","UIView","UIButton","UIToolBar","UINavigationBar","UITabBar","UIImageView","UIScrollView","UISplitView","UITextView","UIView Transitions", "UIPickerView","UISwitch","UISlider","UIAlertView","UIIcons","UISegmentContol","UISearchBar","UICollectionView","UIActivityIndicator","UIPageControl", "UIProgresssView","UIRefreshControl","UISlider","UIStepper" };
 
-
 			sampleTableView.Source = new TableSource (tableItems, this);
 			Add (sampleTableView);
 			this.View.AddSubview (sampleTableView);

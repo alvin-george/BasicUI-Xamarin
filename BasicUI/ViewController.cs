@@ -2,6 +2,8 @@
 using CoreGraphics;
 using UIKit;
 using Foundation;
+using System.Runtime.Remoting.Channels;
+using System.Net;
 
 namespace BasicUI
 {
@@ -19,6 +21,13 @@ namespace BasicUI
 		UIView sampleView1;
 		UIButton sampleButton1;
 		UIToolbar sampleToolBar1;
+
+		UINavigationBar sampleNavigationBar;
+		UITabBar sampleTabBar;
+		UIImageView sampleImageView;
+
+		UIScrollView sampleScrollView;
+		UITextView sampleTextView;
 
 		public ViewController (IntPtr handle) : base (handle)
 		{
@@ -39,8 +48,12 @@ namespace BasicUI
 			//this.addUITextFieldToView ();
 			//this.addUIViewToViewController ();
 			//this.addUIButtonToView ();
-			this.addUIToolBarToView ();
-
+			//this.addUIToolBarToView ();
+			//this.addUINavigationBarToViewController ();
+			//this.addUITabBarToView ();
+			//this.addUIImageViewToView ();
+			//this.addScrollViewToView ();
+			this.addUITextViewToView ();
 		}
 
 		public void addUILabelToView ()
@@ -136,6 +149,7 @@ namespace BasicUI
 			this.View.AddSubview (sampleView1);
 						
 		}
+
 		void enableUITextFieldDelegateMethods ()
 		{
 			this.sampleTextField1.ShouldReturn += (textField) => {
@@ -164,7 +178,8 @@ namespace BasicUI
 
 			};
 		}
-		public void addUIButtonToView()
+
+		public void addUIButtonToView ()
 		{			
 			this.sampleButton1 = new UIButton (UIButtonType.RoundedRect);	
 			sampleButton1.Frame = new CoreGraphics.CGRect (10f, 100f, 300f, 50f);
@@ -178,31 +193,129 @@ namespace BasicUI
 
 
 		}
+
 		void OnSpeakButtonTapped (object sender, EventArgs e)
 		{
 			// This is the event handler for the actual UIButton TouchUpInside event.	
 			Console.WriteLine ("button tapped");
 		}
-		void addUIToolBarToView()
+
+		void addUIToolBarToView ()
 		{
 
 			sampleToolBar1 = new UIToolbar ();
 			sampleToolBar1.Frame = new CoreGraphics.CGRect (50f, 100f, 300f, 50f);
 
-			var browserButton = new UIBarButtonItem("Browser", UIBarButtonItemStyle.Plain, null);
-			var backButton = new UIBarButtonItem("Back", UIBarButtonItemStyle.Plain, null);
+			var browserButton = new UIBarButtonItem ("Browser", UIBarButtonItemStyle.Plain, null);
+
+			browserButton.Clicked += (sender, e) => {
+				Console.WriteLine ("bar button tapped");
+			};
+			var backButton = new UIBarButtonItem ("Back", UIBarButtonItemStyle.Plain, null);
 			var forwardButton = new UIBarButtonItem ("Forward", UIBarButtonItemStyle.Plain, null);
-
 			sampleToolBar1.Items = new UIBarButtonItem[] { backButton, forwardButton, browserButton };
-
-			this.View.AddSubview (sampleToolBar1);
-		
+			this.View.AddSubview (sampleToolBar1);		
 		}
-		void barButtonTapped(String barButtonName)
+
+		void addUINavigationBarToViewController ()
+		{				
+			sampleNavigationBar = new UINavigationBar ();
+			sampleNavigationBar.Frame = new CoreGraphics.CGRect (0f, 44f, 300f, 50f);
+
+			var navigationItem1 = new UINavigationItem (title : "Item 1");
+			var navigationBarButtonItem2 = new UIBarButtonItem ("Item 2", UIBarButtonItemStyle.Done, null);
+
+			navigationItem1.RightBarButtonItem = navigationBarButtonItem2;
+
+			sampleNavigationBar.Items = new UINavigationItem[] { navigationItem1 };
+			this.View.AddSubview (sampleNavigationBar);
+
+		}
+
+		void barButtonTapped (String barButtonName)
 		{
-			UIAlertController okAlertController = UIAlertController.Create ("UIButton Selected",barButtonName, UIAlertControllerStyle.Alert);
-			okAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+			UIAlertController okAlertController = UIAlertController.Create ("UIButton Selected", barButtonName, UIAlertControllerStyle.Alert);
+			okAlertController.AddAction (UIAlertAction.Create ("OK", UIAlertActionStyle.Default, null));
 			this.PresentViewController (okAlertController, true, null);			
+		}
+
+		void addUITabBarToView ()
+		{
+			sampleTabBar = new UITabBar ();
+			sampleTabBar.Frame = new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width - 10, 50f);
+
+			var tabBarItem = new UITabBarItem ("TAB BAR ITEM", null, 4);
+
+			sampleTabBar.Items = new UITabBarItem[]{ tabBarItem };
+
+			sampleTabBar.ItemSelected += (sender, e) => {
+				Console.WriteLine ("tab bar button item slected");
+			};
+
+			this.View.AddSubview (sampleTabBar);
+		}
+
+		void addUIImageViewToView ()
+		{
+			sampleImageView = new UIImageView (new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width - 20, 150f));
+			sampleImageView.Image = UIImage.FromFile ("Real-Estate_4.jpg");
+			sampleImageView.UserInteractionEnabled = true;
+			sampleImageView.TintColor = UIColor.Brown;
+			sampleImageView.Highlighted = true;
+
+			//Tapping ImageView
+			var tapGesture = new UITapGestureRecognizer (OnImageViewTap);		
+			sampleImageView.AddGestureRecognizer (tapGesture);
+
+			this.View.AddSubview (sampleImageView);
+		}
+
+		private void OnImageViewTap (UIGestureRecognizer gesture)
+		{
+			sampleImageView.Frame = new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width - 20, 350f);
+
+		}
+
+		private void addScrollViewToView ()
+		{
+			sampleScrollView = new UIScrollView (new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width, this.View.Frame.Height + 100));
+			sampleScrollView.BackgroundColor = UIColor.Clear;
+			sampleScrollView.Bounces = true;
+			sampleScrollView.ShowsVerticalScrollIndicator = true;
+
+			var imageView = new UIImageView (UIImage.FromFile ("Real-Estate_4.jpg"));
+			sampleScrollView.ContentSize = imageView.Image.Size;
+			sampleScrollView.AddSubview (imageView);
+			this.View.AddSubview (sampleScrollView);
+		}
+		private void addSplitViewToVIew()
+		{
+			
+		}
+		private void addUITextViewToView()
+		{
+			sampleTextView = new UITextView (new CoreGraphics.CGRect(10f, 44f, this.View.Frame.Width - 20, 350f));
+			sampleTextView.TintColor = UIColor.Brown;
+			sampleTextView.Text = "sample Text View Text";
+			sampleTextView.Editable = true;
+			sampleTextView.BackgroundColor = UIColor.LightGray;
+			sampleTextView.EnablesReturnKeyAutomatically = true;
+
+			this.enableUITextViewDelegateMethods ();
+			this.View.AddSubview (sampleTextView);
+		}
+		void enableUITextViewDelegateMethods()
+		{
+			sampleTextView.ShouldBeginEditing += (textView) => {
+				//Write here
+				Console.WriteLine ("textView begin editing");
+				return true;
+			};
+			sampleTextView.ShouldEndEditing += (textView) => {
+				//Write here
+				textView.ResignFirstResponder ();
+				return true;
+			};
 		}
 
 		public override void DidReceiveMemoryWarning ()
