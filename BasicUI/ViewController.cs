@@ -4,6 +4,8 @@ using UIKit;
 using Foundation;
 using System.Runtime.Remoting.Channels;
 using System.Net;
+using System.Runtime.ConstrainedExecution;
+using AddressBook;
 
 namespace BasicUI
 {
@@ -28,6 +30,14 @@ namespace BasicUI
 
 		UIScrollView sampleScrollView;
 		UITextView sampleTextView;
+		UIView transitionView;
+
+		UIPickerView samplePicker;
+		UISwitch sampleSwitch;
+		UISlider sampleSlider;
+
+		UIAlertView sampleAlert1;
+		UIAlertView sampleAlert2;
 
 		public ViewController (IntPtr handle) : base (handle)
 		{
@@ -35,9 +45,7 @@ namespace BasicUI
 
 		public override void ViewDidLoad ()
 		{
-			base.ViewDidLoad ();
-			// Perform any additional setup after loading the view, typically from a nib.
-		
+			base.ViewDidLoad ();		
 		}
 
 		public override void ViewDidAppear (bool animated)
@@ -53,7 +61,12 @@ namespace BasicUI
 			//this.addUITabBarToView ();
 			//this.addUIImageViewToView ();
 			//this.addScrollViewToView ();
-			this.addUITextViewToView ();
+			//this.addUITextViewToView ();
+			//this.addUIViewTransitionsToView ();
+			//this.addUIPickerViewToView ();
+			//this.addUISwitchToView ();
+			this.addUISliderToView ();
+
 		}
 
 		public void addUILabelToView ()
@@ -207,7 +220,6 @@ namespace BasicUI
 			sampleToolBar1.Frame = new CoreGraphics.CGRect (50f, 100f, 300f, 50f);
 
 			var browserButton = new UIBarButtonItem ("Browser", UIBarButtonItemStyle.Plain, null);
-
 			browserButton.Clicked += (sender, e) => {
 				Console.WriteLine ("bar button tapped");
 			};
@@ -245,9 +257,7 @@ namespace BasicUI
 			sampleTabBar.Frame = new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width - 10, 50f);
 
 			var tabBarItem = new UITabBarItem ("TAB BAR ITEM", null, 4);
-
 			sampleTabBar.Items = new UITabBarItem[]{ tabBarItem };
-
 			sampleTabBar.ItemSelected += (sender, e) => {
 				Console.WriteLine ("tab bar button item slected");
 			};
@@ -288,13 +298,15 @@ namespace BasicUI
 			sampleScrollView.AddSubview (imageView);
 			this.View.AddSubview (sampleScrollView);
 		}
-		private void addSplitViewToVIew()
+
+		private void addSplitViewToVIew ()
 		{
 			
 		}
-		private void addUITextViewToView()
+
+		private void addUITextViewToView ()
 		{
-			sampleTextView = new UITextView (new CoreGraphics.CGRect(10f, 44f, this.View.Frame.Width - 20, 350f));
+			sampleTextView = new UITextView (new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width - 20, 350f));
 			sampleTextView.TintColor = UIColor.Brown;
 			sampleTextView.Text = "sample Text View Text";
 			sampleTextView.Editable = true;
@@ -304,7 +316,8 @@ namespace BasicUI
 			this.enableUITextViewDelegateMethods ();
 			this.View.AddSubview (sampleTextView);
 		}
-		void enableUITextViewDelegateMethods()
+
+		private void enableUITextViewDelegateMethods ()
 		{
 			sampleTextView.ShouldBeginEditing += (textView) => {
 				//Write here
@@ -316,6 +329,107 @@ namespace BasicUI
 				textView.ResignFirstResponder ();
 				return true;
 			};
+		}
+
+		private void addUIViewTransitionsToView ()
+		{
+			transitionView = new UIView (new CoreGraphics.CGRect (10f, 244f, this.View.Frame.Width - 20, 250f));
+			transitionView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Real-Estate_4.jpg"));
+			this.View.AddSubview (transitionView);
+
+
+			var sampletransitionViewButton = new UIButton (UIButtonType.RoundedRect);	
+			sampletransitionViewButton.Frame = new CoreGraphics.CGRect (10f, 100f, 300f, 50f);
+			sampletransitionViewButton.SetTitle ("Make Transition", UIControlState.Normal);
+			sampletransitionViewButton.SetNeedsLayout ();
+			sampletransitionViewButton.TouchUpInside += sampletransitionViewButtonTapped;
+			this.View.AddSubview (sampletransitionViewButton);
+
+		}
+
+		private void sampletransitionViewButtonTapped (object sender, EventArgs e)
+		{
+			UIView.Transition (fromView: transitionView, toView: transitionView, duration: .5, options: UIViewAnimationOptions.TransitionCrossDissolve, completion: () => { 
+				transitionView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("bid_auction.png"));
+				this.View.AddSubview (transitionView);
+				Console.WriteLine ("transition complete"); 
+			});
+		}
+
+		private void addUIPickerViewToView ()
+		{
+			samplePicker = new UIPickerView (new CoreGraphics.CGRect (10f, 244f, this.View.Frame.Width - 20, 250f));
+			samplePicker.BackgroundColor = UIColor.LightGray;
+			samplePicker.Model = new StatusPickerViewModel ();
+			this.View.AddSubview (samplePicker);	
+		}
+
+		public class StatusPickerViewModel : UIPickerViewModel
+		{
+			public override nint GetRowsInComponent (UIPickerView pickerView, nint component)
+			{
+				return 5;
+			}
+
+			public override string GetTitle (UIPickerView pickerView, nint row, nint component)
+			{				
+				return "Picker Title";
+			}
+
+			public override nint GetComponentCount (UIPickerView pickerView)
+			{
+
+				return 1;
+			}
+
+		}
+
+		private void addUISwitchToView ()
+		{
+
+			var sampleSwitchDemoView = new UIView (new CoreGraphics.CGRect (10f, 244f, this.View.Frame.Width - 20, 250f));
+			this.View.AddSubview (sampleSwitchDemoView);
+
+
+			sampleSwitch = new UISwitch ();
+			sampleSwitch.Frame = new CoreGraphics.CGRect (100f, 100f, 10f, 10f);
+			sampleSwitch.ValueChanged += delegate {
+				if (sampleSwitch.On) {					
+					Console.WriteLine ("TRUE");	
+					sampleSwitchDemoView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Real-Estate_4.jpg"));
+
+				} else {
+					Console.WriteLine ("FALSE");
+					sampleSwitchDemoView.BackgroundColor = UIColor.White;
+				}
+			};
+			this.View.AddSubview (sampleSwitch);
+
+		}
+		private void addUISliderToView()
+		{
+			var sampleSliderDemoView = new UIView (new CoreGraphics.CGRect (10f, 244f, this.View.Frame.Width - 20, 250f));
+			sampleSliderDemoView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Real-Estate_4.jpg"));
+			this.View.AddSubview (sampleSliderDemoView);
+
+			var sampleSliderValueLabel = new UILabel ();
+			sampleSliderValueLabel.Frame = new CoreGraphics.CGRect (100f, 100f, 300f, 50f);
+			sampleSliderValueLabel.Text = "Slider Value : ";
+			this.View.AddSubview (sampleSliderValueLabel);
+
+			sampleSlider = new UISlider();		
+			sampleSlider.Frame = new CoreGraphics.CGRect (50f, 170f, this.View.Frame.Width - 100, 10f);
+			sampleSlider.ValueChanged += delegate {
+
+				sampleSliderDemoView.Alpha =  sampleSlider.Value;
+				sampleSliderValueLabel.Text = "Slider Value : "+sampleSlider.Value;
+
+			};
+			this.View.AddSubview (sampleSlider);
+		}
+		private void addUIAlertViewToView()
+		{
+			
 		}
 
 		public override void DidReceiveMemoryWarning ()
