@@ -5,7 +5,11 @@ using Foundation;
 using System.Runtime.Remoting.Channels;
 using System.Net;
 using System.Runtime.ConstrainedExecution;
-using AddressBook;
+using System.Timers;
+using System.Diagnostics;
+using ObjCRuntime;
+using System.Collections.Generic;
+
 
 namespace BasicUI
 {
@@ -36,8 +40,12 @@ namespace BasicUI
 		UISwitch sampleSwitch;
 		UISlider sampleSlider;
 
-		UIAlertView sampleAlert1;
-		UIAlertView sampleAlert2;
+		UISegmentedControl sampleSegmentControl;
+		UISearchBar sampleSearchBar;
+		UICollectionView sampleCollectionView;
+
+		UIActivityIndicatorView sampleIndicator;
+		UIProgressView sampleProgressView;
 
 		public ViewController (IntPtr handle) : base (handle)
 		{
@@ -65,8 +73,13 @@ namespace BasicUI
 			//this.addUIViewTransitionsToView ();
 			//this.addUIPickerViewToView ();
 			//this.addUISwitchToView ();
-			this.addUISliderToView ();
-
+			//this.addUISliderToView ();
+			//this.addUIAlertViewToView ();
+			//this.addUISegmentControlToView ();
+			//this.addSearchBarToView ();
+			//this.addUICollectionViewToView ();
+			//this.addUIActivityIndicatorToView ();
+			this.addUIProgressViewToView ();
 		}
 
 		public void addUILabelToView ()
@@ -406,7 +419,8 @@ namespace BasicUI
 			this.View.AddSubview (sampleSwitch);
 
 		}
-		private void addUISliderToView()
+
+		private void addUISliderToView ()
 		{
 			var sampleSliderDemoView = new UIView (new CoreGraphics.CGRect (10f, 244f, this.View.Frame.Width - 20, 250f));
 			sampleSliderDemoView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Real-Estate_4.jpg"));
@@ -417,19 +431,138 @@ namespace BasicUI
 			sampleSliderValueLabel.Text = "Slider Value : ";
 			this.View.AddSubview (sampleSliderValueLabel);
 
-			sampleSlider = new UISlider();		
+			sampleSlider = new UISlider ();		
 			sampleSlider.Frame = new CoreGraphics.CGRect (50f, 170f, this.View.Frame.Width - 100, 10f);
 			sampleSlider.ValueChanged += delegate {
 
-				sampleSliderDemoView.Alpha =  sampleSlider.Value;
-				sampleSliderValueLabel.Text = "Slider Value : "+sampleSlider.Value;
+				sampleSliderDemoView.Alpha = sampleSlider.Value;
+				sampleSliderValueLabel.Text = "Slider Value : " + sampleSlider.Value;
 
 			};
 			this.View.AddSubview (sampleSlider);
 		}
-		private void addUIAlertViewToView()
+
+		private void addUIAlertViewToView ()
 		{
+
+			var alert = UIAlertController.Create ("Error", "Something went wrong", UIAlertControllerStyle.Alert);
+			alert.AddAction (UIAlertAction.Create ("Ok", UIAlertActionStyle.Destructive, null));
+			alert.AddAction (UIAlertAction.Create ("Cancel", UIAlertActionStyle.Cancel, a => 
+
+				//Write Action here
+				Console.WriteLine ("Cancel Clicked")
 			
+			));
+			this.PresentViewController (alert, animated: true, completionHandler: null);
+
+			var sampleTimer = NSTimer.CreateRepeatingScheduledTimer (TimeSpan.FromSeconds (5.0), delegate {
+				
+				var alertSheet = UIAlertController.Create ("Error", "Something went wrong", UIAlertControllerStyle.ActionSheet);
+				alertSheet.AddAction (UIAlertAction.Create ("Ok", UIAlertActionStyle.Destructive, null));
+				alertSheet.AddAction (UIAlertAction.Create ("Cancel", UIAlertActionStyle.Cancel, a => 
+
+					//Write Action here
+					Console.WriteLine ("Cancel Clicked")
+
+				));
+				this.PresentViewController (alertSheet, animated: true, completionHandler: null);
+
+			});		
+		}
+
+		private void addUISegmentControlToView ()
+		{
+			sampleSegmentControl = new UISegmentedControl (new CoreGraphics.CGRect (20, 20, 280, 40));
+			sampleSegmentControl.InsertSegment ("One", 0, false);
+			sampleSegmentControl.InsertSegment ("Two", 1, false);
+			sampleSegmentControl.SelectedSegment = 1;
+
+			sampleSegmentControl.ValueChanged += (sender, e) => {
+				var selectedSegmentId = (sender as UISegmentedControl).SelectedSegment;
+
+				// do something with selectedSegmentId
+				if (selectedSegmentId == 0) {					
+					Console.WriteLine (selectedSegmentId);	
+					sampleSegmentControl.BackgroundColor = UIColor.LightGray;
+
+				} else {
+					Console.WriteLine (selectedSegmentId);
+					sampleSegmentControl.BackgroundColor = UIColor.White;
+				}
+				;
+
+			};
+			this.View.AddSubview (sampleSegmentControl);
+		}
+
+		private void addSearchBarToView ()
+		{
+			sampleSearchBar = new UISearchBar (new CoreGraphics.CGRect (20, 20, this.View.Frame.Width - 50, 40));
+			sampleSearchBar.SearchBarStyle = UISearchBarStyle.Prominent;
+
+			sampleSearchBar.ShowsCancelButton = true;
+			sampleSearchBar.Delegate = new SearchDelegate ();
+			this.View.AddSubview (sampleSearchBar);
+		}
+
+		class SearchDelegate : UISearchBarDelegate
+		{
+			public override void SearchButtonClicked (UISearchBar bar)
+			{
+				bar.ResignFirstResponder ();
+			}
+
+			public override void CancelButtonClicked (UISearchBar bar)
+			{
+				bar.ResignFirstResponder ();
+			}
+
+			public override bool ShouldBeginEditing (UISearchBar searchBar)
+			{
+				
+				return true;
+			}
+
+			public override bool ShouldEndEditing (UISearchBar searchBar)
+			{
+				return true;
+			}
+
+			public override bool ShouldChangeTextInRange (UISearchBar searchBar, NSRange range, string text)
+			{
+				Console.WriteLine (searchBar.Text);
+				return true;
+			}
+		}
+
+		private void addUICollectionViewToView ()
+		{
+
+			this.View.AddSubview (sampleCollectionView);
+		}
+
+		private void addUIActivityIndicatorToView ()
+		{
+			this.View.BackgroundColor = UIColor.DarkGray;
+
+			sampleIndicator = new UIActivityIndicatorView ();
+			sampleIndicator.Center = this.View.Center;
+			sampleIndicator.ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge;
+			//sampleIndicator.BackgroundColor = UIColor.Red;
+			//sampleIndicator.TintColor = UIColor.Red;
+			this.View.AddSubview (sampleIndicator);
+
+			sampleIndicator.StartAnimating ();
+			//sampleIndicator.StopAnimating ();		
+		}
+		private void addUIProgressViewToView()
+		{
+			sampleProgressView = new UIProgressView (UIProgressViewStyle.Bar);
+			sampleProgressView.Frame = new CoreGraphics.CGRect (20, 120, this.View.Frame.Width - 50, 40);
+			sampleProgressView.BackgroundColor = UIColor.Brown;
+			this.View.AddSubview (sampleProgressView);
+
+			sampleProgressView.SetProgress (0.5f,true);
 		}
 
 		public override void DidReceiveMemoryWarning ()

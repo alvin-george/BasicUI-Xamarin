@@ -86,6 +86,7 @@
     <InterfaceDefinition Include="Main.storyboard" />
     <InterfaceDefinition Include="IndexViewController.xib" />
     <InterfaceDefinition Include="sampleTableViewCell.xib" />
+    <InterfaceDefinition Include="sampleCollectionViewCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
