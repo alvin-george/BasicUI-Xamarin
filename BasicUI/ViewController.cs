@@ -539,6 +539,7 @@ namespace BasicUI
 		{
 
 			this.View.AddSubview (sampleCollectionView);
+
 		}
 
 		private void addUIActivityIndicatorToView ()
@@ -560,6 +561,7 @@ namespace BasicUI
 			sampleProgressView = new UIProgressView (UIProgressViewStyle.Bar);
 			sampleProgressView.Frame = new CoreGraphics.CGRect (20, 120, this.View.Frame.Width - 50, 40);
 			sampleProgressView.BackgroundColor = UIColor.Brown;
+			sampleProgressView.TintColor = UIColor.Red;
 			this.View.AddSubview (sampleProgressView);
 
 			sampleProgressView.SetProgress (0.5f,true);
