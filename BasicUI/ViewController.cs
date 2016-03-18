@@ -9,6 +9,8 @@ using System.Timers;
 using System.Diagnostics;
 using ObjCRuntime;
 using System.Collections.Generic;
+using System.Dynamic;
+using CoreGraphics;
 
 
 namespace BasicUI
@@ -47,6 +49,10 @@ namespace BasicUI
 		UIActivityIndicatorView sampleIndicator;
 		UIProgressView sampleProgressView;
 
+		UITableView sampleRefreshControlTableView;
+		UIRefreshControl sampleRefreshConrtrol;
+		UIStepper sampleStepper;
+
 		public ViewController (IntPtr handle) : base (handle)
 		{
 		}
@@ -79,7 +85,9 @@ namespace BasicUI
 			//this.addSearchBarToView ();
 			//this.addUICollectionViewToView ();
 			//this.addUIActivityIndicatorToView ();
-			this.addUIProgressViewToView ();
+			//this.addUIProgressViewToView ();
+			//this.addUIRefreshControlToView ();
+			this.addUIStepperToView ();
 		}
 
 		public void addUILabelToView ()
@@ -468,6 +476,8 @@ namespace BasicUI
 				this.PresentViewController (alertSheet, animated: true, completionHandler: null);
 
 			});		
+
+
 		}
 
 		private void addUISegmentControlToView ()
@@ -556,7 +566,8 @@ namespace BasicUI
 			sampleIndicator.StartAnimating ();
 			//sampleIndicator.StopAnimating ();		
 		}
-		private void addUIProgressViewToView()
+
+		private void addUIProgressViewToView ()
 		{
 			sampleProgressView = new UIProgressView (UIProgressViewStyle.Bar);
 			sampleProgressView.Frame = new CoreGraphics.CGRect (20, 120, this.View.Frame.Width - 50, 40);
@@ -564,7 +575,131 @@ namespace BasicUI
 			sampleProgressView.TintColor = UIColor.Red;
 			this.View.AddSubview (sampleProgressView);
 
-			sampleProgressView.SetProgress (0.5f,true);
+			sampleProgressView.SetProgress (0.5f, true);
+		}
+
+		private void addUIRefreshControlToView ()
+		{
+			sampleRefreshControlTableView = new UITableView ();
+			sampleRefreshControlTableView.Frame = new CoreGraphics.CGRect (this.View.Frame.X, this.View.Frame.Y + 44, this.View.Frame.Width, this.View.Frame.Height);
+
+			//Setting Table Source
+			string[] refreshTableItems = new string[] { "1", "2", "3", "4", "5", "6" };
+			sampleRefreshControlTableView.Source = new RefreshTableSource (refreshTableItems, this);
+			Add (sampleRefreshControlTableView);
+			this.View.AddSubview (sampleRefreshControlTableView);
+
+			sampleRefreshConrtrol = new UIRefreshControl ();
+			sampleRefreshConrtrol.AttributedTitle = new NSAttributedString ("Pull To Refresh",
+				new UIStringAttributes () {
+					ForegroundColor = UIColor.Red,
+					KerningAdjustment = 3
+				});
+			sampleRefreshConrtrol.ValueChanged += refreshControlOnValueChanged;
+			sampleRefreshControlTableView.AddSubview (sampleRefreshConrtrol);
+			sampleRefreshConrtrol.Enabled = true;
+
+		}
+
+		public class RefreshTableSource : UITableViewSource
+		{
+			ViewController owner;
+
+			string[] refreshTableItems;
+			string CellIdentifier = "TableCell";
+
+			public event EventHandler<NSIndexPath> FundRequestSelected;
+
+			public RefreshTableSource (string[] items, ViewController owner)
+			{
+				refreshTableItems = items;
+				this.owner = owner;
+			}
+
+			public override nint RowsInSection (UITableView tableview, nint section)
+			{
+				return refreshTableItems.Length;
+			}
+
+			public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
+			{
+				UITableViewCell cell = tableView.DequeueReusableCell (CellIdentifier);
+				string item = refreshTableItems [indexPath.Row];
+
+				//---- if there are no cells to reuse, create a new one
+				if (cell == null) {
+					cell = new UITableViewCell (UITableViewCellStyle.Default, CellIdentifier);
+				}
+
+				cell.TextLabel.Text = item;
+				cell.TextLabel.TextAlignment = UITextAlignment.Center;
+				return cell;
+			}
+
+			public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
+			{
+
+				tableView.DeselectRow (indexPath, true);
+
+				if (FundRequestSelected != null)
+					FundRequestSelected (this, indexPath);
+			}
+
+		}
+
+		private void refreshControlOnValueChanged (object sender, EventArgs e)
+		{
+
+
+			sampleRefreshConrtrol.AttributedTitle = new NSAttributedString ("Refreshing",
+				new UIStringAttributes () {
+					ForegroundColor = UIColor.Blue,
+					KerningAdjustment = 5
+				});
+			
+			var sampleTimer = NSTimer.CreateRepeatingScheduledTimer (TimeSpan.FromSeconds (5.0), delegate {
+
+				sampleRefreshConrtrol.EndRefreshing ();		
+				sampleRefreshConrtrol.Enabled = false;
+			});
+
+			if (sampleRefreshConrtrol.Enabled = false) {
+				sampleTimer.Invalidate ();
+			}
+		}
+
+		private void addUIStepperToView ()
+		{
+			sampleImageView = new UIImageView (new CGRect (10f, 150f, this.View.Frame.Width - 100, 150f));
+			sampleImageView.Image = UIImage.FromFile ("Real-Estate_4.jpg");
+			this.View.AddSubview (sampleImageView);
+
+			sampleStepper = new UIStepper (new CoreGraphics.CGRect (120, 70, this.View.Frame.Width - 50, 40));
+			sampleStepper.ValueChanged += sampleStepperOnValueChanged;
+			sampleStepper.AutoRepeat = true;
+			sampleStepper.MaximumValue = 1;
+			//sampleStepper.Wraps = true;
+			sampleStepper.StepValue = 1;
+
+			this.View.AddSubview (sampleStepper);
+		}
+
+		private void sampleStepperOnValueChanged (object sender, EventArgs e)
+		{			
+			Console.WriteLine (sampleStepper.Value);
+	
+			if (sampleStepper.Value == 1) {	
+
+				sampleImageView.Frame = new CGRect (10f, 150f, this.View.Frame.Width - 100, sampleImageView.Frame.Height * 2);
+				sampleImageView.UpdateConstraintsIfNeeded ();
+								
+			} else { 	
+				
+				sampleImageView.Frame = new CGRect (10f, 150f, this.View.Frame.Width - 100, sampleImageView.Frame.Height / 2);
+				sampleImageView.UpdateConstraintsIfNeeded ();
+			
+			}
+		
 		}
 
 		public override void DidReceiveMemoryWarning ()
