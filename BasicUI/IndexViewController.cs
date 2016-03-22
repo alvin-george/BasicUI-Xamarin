@@ -33,7 +33,7 @@ namespace BasicUI
 			sampleTableView.Frame = new CoreGraphics.CGRect (this.View.Frame.X, this.View.Frame.Y+44, this.View.Frame.Width, this.View.Frame.Height);
 
 			//Setting Table Source
-			string[] tableItems = new string[] {"UILabel","UITextField","UIView","UIButton","UIToolBar","UINavigationBar","UITabBar","UIImageView","UIScrollView","UISplitView","UITextView","UIView Transitions", "UIPickerView","UISwitch","UISlider","UIAlertView","UISegmentContol","UISearchBar","UICollectionView","UIActivityIndicator","UIPageControl", "UIProgresssView","UIRefreshControl","UIStepper" };
+			string[] tableItems = new string[] {"UILabel","UITextField","UIView","UIButton","UIToolBar","UINavigationBar","UITabBar","UIImageView","UIScrollView","UITextView","UIView Transitions", "UIPickerView","UISwitch","UISlider","UIAlertView","UISegmentContol","UISearchBar","UICollectionView","UIActivityIndicator","UIProgresssView","UIRefreshControl","UIStepper" };
 
 			sampleTableView.Source = new TableSource (tableItems, this);
 			Add (sampleTableView);
