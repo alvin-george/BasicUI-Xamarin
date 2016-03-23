@@ -112,5 +112,6 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <BundleResource Include="Real-Estate_4.jpg" />
+    <BundleResource Include="bid_auction.png" />
   </ItemGroup>
 </Project>

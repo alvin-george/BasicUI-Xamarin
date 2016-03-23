@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicUI", "BasicUI\BasicUI.csproj", "{3F9D998A-46C1-4CC9-AC0F-65FD43569F20}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22D11BC0-BB02-476A-8602-FD54182A3CA1}"
-	ProjectSection(SolutionItems) = preProject
-		BasicUI\bid_auction.png = BasicUI\bid_auction.png
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

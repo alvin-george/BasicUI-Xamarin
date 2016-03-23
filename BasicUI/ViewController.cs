@@ -95,8 +95,7 @@ namespace BasicUI
 					break;
 				case "UIImageView":
 					this.addUIImageViewToView ();
-					break;
-	
+					break;	
 				case "UIScrollView":
 					this.addScrollViewToView ();
 					break;
@@ -120,16 +119,16 @@ namespace BasicUI
 					this.addUIAlertViewToView ();
 					break;
 				case "UISegmentContol":
-					this.addUILabelToView ();
+					this.addUISegmentControlToView ();
 					break;
 				case "UISearchBar":
-					this.addUILabelToView ();
+					this.addSearchBarToView();
 					break;
 				case "UICollectionView":
 					this.addUICollectionViewToView ();
 					break;
 				case "UIActivityIndicator":
-					this.addUILabelToView ();
+					this.addUIActivityIndicatorToView ();
 					break;
 				case "UIProgresssView":
 					this.addUIProgressViewToView ();
@@ -222,6 +221,8 @@ namespace BasicUI
 			sampleTextField2.Layer.ShadowOpacity = 0.3f;
 			sampleTextField2.Layer.ShadowRadius = 3f;
 
+			sampleTextField1.BecomeFirstResponder ();	
+
 			this.View.AddSubview (sampleTextField1);
 			this.View.AddSubview (sampleTextField2);
 
@@ -244,7 +245,7 @@ namespace BasicUI
 		void enableUITextFieldDelegateMethods ()
 		{
 			this.sampleTextField1.ShouldReturn += (textField) => {
-				sampleTextField2.BecomeFirstResponder ();
+	
 				textField.ResignFirstResponder ();
 				return true;
 			};
@@ -341,7 +342,7 @@ namespace BasicUI
 
 		void addUIImageViewToView ()
 		{
-			sampleImageView = new UIImageView (new CoreGraphics.CGRect (10f, 64f, this.View.Frame.Width - 20, 150f));
+			sampleImageView = new UIImageView (new CoreGraphics.CGRect (10f, 84f, this.View.Frame.Width - 20, 150f));
 			sampleImageView.Image = UIImage.FromFile ("Real-Estate_4.jpg");
 			sampleImageView.UserInteractionEnabled = true;
 			sampleImageView.TintColor = UIColor.Brown;
@@ -356,7 +357,7 @@ namespace BasicUI
 
 		private void OnImageViewTap (UIGestureRecognizer gesture)
 		{
-			sampleImageView.Frame = new CoreGraphics.CGRect (10f, 64f, this.View.Frame.Width - 20, 350f);
+			sampleImageView.Frame = new CoreGraphics.CGRect (10f, 164f, this.View.Frame.Width - 20, 350f);
 
 		}
 
@@ -372,12 +373,6 @@ namespace BasicUI
 			sampleScrollView.AddSubview (imageView);
 			this.View.AddSubview (sampleScrollView);
 		}
-
-		private void addSplitViewToVIew ()
-		{
-			
-		}
-
 		private void addUITextViewToView ()
 		{
 			sampleTextView = new UITextView (new CoreGraphics.CGRect (10f, 64f, this.View.Frame.Width - 20, 350f));
@@ -393,6 +388,7 @@ namespace BasicUI
 
 		private void enableUITextViewDelegateMethods ()
 		{
+			sampleTextView.ReturnKeyType = UIReturnKeyType.Default;
 			sampleTextView.ShouldBeginEditing += (textView) => {
 				//Write here
 				Console.WriteLine ("textView begin editing");
@@ -403,14 +399,14 @@ namespace BasicUI
 				textView.ResignFirstResponder ();
 				return true;
 			};
+
 		}
 
 		private void addUIViewTransitionsToView ()
 		{
 			transitionView = new UIView (new CoreGraphics.CGRect (10f, 244f, this.View.Frame.Width - 20, 250f));
-			transitionView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Real-Estate_4.jpg"));
+			transitionView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile("bid_auction.png"));
 			this.View.AddSubview (transitionView);
-
 
 			var sampletransitionViewButton = new UIButton (UIButtonType.RoundedRect);	
 			sampletransitionViewButton.Frame = new CoreGraphics.CGRect (10f, 100f, 300f, 50f);
@@ -424,7 +420,7 @@ namespace BasicUI
 		private void sampletransitionViewButtonTapped (object sender, EventArgs e)
 		{
 			UIView.Transition (fromView: transitionView, toView: transitionView, duration: .5, options: UIViewAnimationOptions.TransitionCrossDissolve, completion: () => { 
-				transitionView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("bid_auction.png"));
+				transitionView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile("Real-Estate_4.jpg"));
 				this.View.AddSubview (transitionView);
 				Console.WriteLine ("transition complete"); 
 			});
@@ -516,6 +512,8 @@ namespace BasicUI
 			));
 			this.PresentViewController (alert, animated: true, completionHandler: null);
 
+
+
 			var sampleTimer = NSTimer.CreateRepeatingScheduledTimer (TimeSpan.FromSeconds (5.0), delegate {
 				
 				var alertSheet = UIAlertController.Create ("Error", "Something went wrong", UIAlertControllerStyle.ActionSheet);
@@ -530,12 +528,11 @@ namespace BasicUI
 
 			});		
 
-
 		}
 
 		private void addUISegmentControlToView ()
 		{
-			sampleSegmentControl = new UISegmentedControl (new CoreGraphics.CGRect (20, 20, 280, 40));
+			sampleSegmentControl = new UISegmentedControl (new CoreGraphics.CGRect (20, 70, 280, 40));
 			sampleSegmentControl.InsertSegment ("One", 0, false);
 			sampleSegmentControl.InsertSegment ("Two", 1, false);
 			sampleSegmentControl.SelectedSegment = 1;
@@ -560,7 +557,7 @@ namespace BasicUI
 
 		private void addSearchBarToView ()
 		{
-			sampleSearchBar = new UISearchBar (new CoreGraphics.CGRect (20, 20, this.View.Frame.Width - 50, 40));
+			sampleSearchBar = new UISearchBar (new CoreGraphics.CGRect (20, 64, this.View.Frame.Width - 50, 40));
 			sampleSearchBar.SearchBarStyle = UISearchBarStyle.Prominent;
 
 			sampleSearchBar.ShowsCancelButton = true;
@@ -601,7 +598,7 @@ namespace BasicUI
 		private void addUICollectionViewToView ()
 		{
 
-			this.View.AddSubview (sampleCollectionView);
+			//this.View.AddSubview (sampleCollectionView);
 
 		}
 
