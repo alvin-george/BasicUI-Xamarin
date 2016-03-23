@@ -36,7 +36,6 @@ namespace BasicUI
 			}
 
 			cell.TextLabel.Text = item;
-			cell.BackgroundColor = UIColor.LightGray;
 
 			return cell;
 		}
@@ -49,14 +48,14 @@ namespace BasicUI
 			if (FundRequestSelected != null)				
 				FundRequestSelected (this, indexPath);
 
-//			UIStoryboard board = UIStoryboard.FromName ("Main", null);
-//
-//			ViewController ctrl = (ViewController)board.InstantiateViewController ("viewControllerID");
-//			owner.PresentViewController (ctrl, true, null);
+			UIStoryboard board = UIStoryboard.FromName ("Main", null);
+			ViewController viewController = (ViewController)board.InstantiateViewController ("viewControllerID");
 
-			owner.PerformSegue("segueToViewController", this);
+			//Passing selected component name
+			viewController.getTheSelectedUIComponetName (TableItems[indexPath.Row]);
+		
+			owner.NavigationController.PushViewController (viewController, true);
 		}
-
 	}
 }
 

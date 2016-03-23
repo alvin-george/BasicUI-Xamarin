@@ -59,35 +59,92 @@ namespace BasicUI
 
 		public override void ViewDidLoad ()
 		{
-			base.ViewDidLoad ();		
+			base.ViewDidLoad ();
+
 		}
 
 		public override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);
+		}
 
-			//this.addUILabelToView ();
-			//this.addUITextFieldToView ();
-			//this.addUIViewToViewController ();
-			//this.addUIButtonToView ();
-			//this.addUIToolBarToView ();
-			//this.addUINavigationBarToViewController ();
-			//this.addUITabBarToView ();
-			//this.addUIImageViewToView ();
-			//this.addScrollViewToView ();
-			//this.addUITextViewToView ();
-			//this.addUIViewTransitionsToView ();
-			//this.addUIPickerViewToView ();
-			//this.addUISwitchToView ();
-			//this.addUISliderToView ();
-			//this.addUIAlertViewToView ();
-			//this.addUISegmentControlToView ();
-			//this.addSearchBarToView ();
-			//this.addUICollectionViewToView ();
-			//this.addUIActivityIndicatorToView ();
-			//this.addUIProgressViewToView ();
-			//this.addUIRefreshControlToView ();
-			this.addUIStepperToView ();
+		public void getTheSelectedUIComponetName (String uiComponetName)
+		{
+			Console.WriteLine (uiComponetName);
+			switch (uiComponetName) {
+				case "UILabel":
+					this.addUILabelToView ();
+					break;		
+				case "UITextField":
+					this.addUITextFieldToView ();
+					break;
+				case "UIView":
+					this.addUIViewToViewController ();
+					break;
+				case "UIButton":
+					this.addUIButtonToView ();
+					break;
+				case "UIToolBar":
+					this.addUIToolBarToView ();
+					break;
+				case "UINavigationBar":
+					this.addUINavigationBarToViewController ();
+					break;
+				case "UITabBar":
+					this.addUITabBarToView ();
+					break;
+				case "UIImageView":
+					this.addUIImageViewToView ();
+					break;
+	
+				case "UIScrollView":
+					this.addScrollViewToView ();
+					break;
+				case "UITextView":
+					this.addUITextViewToView ();
+					break;
+				case "UIView Transitions":
+					this.addUIViewTransitionsToView ();					
+					break;
+				case "UIPickerView":
+					this.addUIPickerViewToView ();
+					break;
+
+				case "UISwitch":
+					this.addUISwitchToView ();
+					break;
+				case "UISlider":
+					this.addUISliderToView ();
+					break;
+				case "UIAlertView":
+					this.addUIAlertViewToView ();
+					break;
+				case "UISegmentContol":
+					this.addUILabelToView ();
+					break;
+				case "UISearchBar":
+					this.addUILabelToView ();
+					break;
+				case "UICollectionView":
+					this.addUICollectionViewToView ();
+					break;
+				case "UIActivityIndicator":
+					this.addUILabelToView ();
+					break;
+				case "UIProgresssView":
+					this.addUIProgressViewToView ();
+					break;
+				case "UIRefreshControl":
+					this.addUIRefreshControlToView ();
+					break;
+				case "UIStepper":
+					this.addUIStepperToView ();
+					break;
+
+				default:
+					break;
+			}
+
 		}
 
 		public void addUILabelToView ()
@@ -222,10 +279,6 @@ namespace BasicUI
 			sampleButton1.TouchUpInside += OnSpeakButtonTapped;
 
 			this.View.AddSubview (sampleButton1);
-
-			// Here is where the lowest-level event handler is applied to the speak button.
-
-
 		}
 
 		void OnSpeakButtonTapped (object sender, EventArgs e)
@@ -253,7 +306,7 @@ namespace BasicUI
 		void addUINavigationBarToViewController ()
 		{				
 			sampleNavigationBar = new UINavigationBar ();
-			sampleNavigationBar.Frame = new CoreGraphics.CGRect (0f, 44f, 300f, 50f);
+			sampleNavigationBar.Frame = new CoreGraphics.CGRect (0f, 64f, 300f, 44f);
 
 			var navigationItem1 = new UINavigationItem (title : "Item 1");
 			var navigationBarButtonItem2 = new UIBarButtonItem ("Item 2", UIBarButtonItemStyle.Done, null);
@@ -275,7 +328,7 @@ namespace BasicUI
 		void addUITabBarToView ()
 		{
 			sampleTabBar = new UITabBar ();
-			sampleTabBar.Frame = new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width - 10, 50f);
+			sampleTabBar.Frame = new CoreGraphics.CGRect (10f, 64f, this.View.Frame.Width - 10, 50f);
 
 			var tabBarItem = new UITabBarItem ("TAB BAR ITEM", null, 4);
 			sampleTabBar.Items = new UITabBarItem[]{ tabBarItem };
@@ -288,7 +341,7 @@ namespace BasicUI
 
 		void addUIImageViewToView ()
 		{
-			sampleImageView = new UIImageView (new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width - 20, 150f));
+			sampleImageView = new UIImageView (new CoreGraphics.CGRect (10f, 64f, this.View.Frame.Width - 20, 150f));
 			sampleImageView.Image = UIImage.FromFile ("Real-Estate_4.jpg");
 			sampleImageView.UserInteractionEnabled = true;
 			sampleImageView.TintColor = UIColor.Brown;
@@ -303,13 +356,13 @@ namespace BasicUI
 
 		private void OnImageViewTap (UIGestureRecognizer gesture)
 		{
-			sampleImageView.Frame = new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width - 20, 350f);
+			sampleImageView.Frame = new CoreGraphics.CGRect (10f, 64f, this.View.Frame.Width - 20, 350f);
 
 		}
 
 		private void addScrollViewToView ()
 		{
-			sampleScrollView = new UIScrollView (new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width, this.View.Frame.Height + 100));
+			sampleScrollView = new UIScrollView (new CoreGraphics.CGRect (10f, 64f, this.View.Frame.Width, this.View.Frame.Height + 100));
 			sampleScrollView.BackgroundColor = UIColor.Clear;
 			sampleScrollView.Bounces = true;
 			sampleScrollView.ShowsVerticalScrollIndicator = true;
@@ -327,7 +380,7 @@ namespace BasicUI
 
 		private void addUITextViewToView ()
 		{
-			sampleTextView = new UITextView (new CoreGraphics.CGRect (10f, 44f, this.View.Frame.Width - 20, 350f));
+			sampleTextView = new UITextView (new CoreGraphics.CGRect (10f, 64f, this.View.Frame.Width - 20, 350f));
 			sampleTextView.TintColor = UIColor.Brown;
 			sampleTextView.Text = "sample Text View Text";
 			sampleTextView.Editable = true;

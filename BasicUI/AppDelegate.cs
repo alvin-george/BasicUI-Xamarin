@@ -25,7 +25,8 @@ namespace BasicUI
 
 			var indexVC = new IndexViewController ();
 			window = new UIWindow ((CGRect)UIScreen.MainScreen.Bounds);
-		window.RootViewController = indexVC;
+			var navigationController = new UINavigationController (rootViewController : indexVC);
+			window.RootViewController = navigationController;
 			window.MakeKeyAndVisible ();
 
 
